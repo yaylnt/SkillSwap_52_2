@@ -1,6 +1,16 @@
-# SkillSwap — шаблон проекта
+# SkillSwap — платформа обмена навыками
 
-Платформа обмена навыками. Это **темплейт-репозиторий** — не форкай, а нажимай «Use this template».
+[Demo]()
+
+### Стек
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=ts,react,redux,html,css,vite" alt="Skills" />
+</p>
+
+SkillSwap — одностраничное (SPA) приложение, в котором пользователи публикуют навыки двух типов: 
+- “Учу” — навыки, которыми пользователь готов делиться;
+- “Учусь” — навыки, которым пользователь хочет научиться.
+Сервис позволяет находить взаимно подходящие пары, отправлять заявки на обмен и вести список текущих/завершённых сессий. Проект реализован с моковыми данными, без подключения к серверу.
 
 ---
 
@@ -10,16 +20,6 @@
 npm install
 npm run dev
 ```
-
-Открой [http://localhost:5173](http://localhost:5173)
-
----
-
-## State management
-
-Проект использует **Redux Toolkit**. Store настроен в `src/store/index.ts`.
-
-Для работы со store используй типизированные хуки из `src/store/hooks.ts` — `useAppDispatch` и `useAppSelector` вместо оригинальных из react-redux.
 
 ---
 
@@ -55,7 +55,7 @@ public/
 
 ## Моки данных
 
-Файлы `public/db/skills.json` и `public/db/users.json` **пустые** — студенты заполняют сами.
+Файлы `public/db/skills.json` и `public/db/users.json` содержат моковые данные навыков и пользователей.
 
 Структура объектов описана в `src/shared/types/index.ts`.
 
@@ -67,6 +67,7 @@ public/
 |--------|------------|
 | `npm run dev` | Запуск dev-сервера |
 | `npm run build` | Сборка для продакшена |
+| `npm run preview` | Запуск просмотра production-сборки |
 | `npm run lint` | Проверка ESLint + Stylelint |
 | `npm run lint:fix` | Автоисправление lint-ошибок |
 | `npm run format` | Форматирование через Prettier |
@@ -80,66 +81,28 @@ public/
 
 Маршруты объявлены в `src/shared/lib/constants.ts` → `ROUTES`.
 
-Lazy-загрузка уже настроена в `src/app/providers/RouterProvider.tsx`.
-
-Для защищённых маршрутов добавь компонент `PrivateRoute` в `src/features/auth/ui/`.
+Lazy-загрузка настроена в `src/app/providers/RouterProvider.tsx`.
 
 ---
 
-## Переменные окружения
+## План доработок
 
-Создай `.env.local` для локальных настроек (в `.gitignore` уже исключён):
+Командой реализован MVP проекта. Ниже план дальнейших доработок.
 
-```
-VITE_APP_TITLE=SkillSwap
-```
-
-Доступ в коде: `import.meta.env.VITE_APP_TITLE`
-
----
-
-## Git-процесс
-
-```
-main        ← только стабильный код, не трогаем напрямую
-└── develop ← основная ветка разработки, PR только сюда
-    └── feature/catalog-filters   ← твоя задача
-        └── → PR → code review → merge в develop
-```
-
-Перед началом каждой задачи:
-```bash
-git checkout develop
-git pull
-git checkout -b feature/название-задачи
-```
-
-После завершения:
-```bash
-git push -u origin feature/название-задачи
-# открываешь PR из своей ветки → в develop
-```
-
-Ветки называй: `feature/`, `fix/`, `refactor/`, `docs/`, `chore/`
-
-Коммиты по [Conventional Commits](https://www.conventionalcommits.org/ru/):
-```
-feat: добавить фильтр по категориям
-fix: исправить отображение карточки на мобильном
-refactor: вынести логику избранного в хук
-```
-
-PR — не больше ~200 строк изменений. Вливает только тимлид или его заместитель. `--force` и `merge --no-ff` в `develop` запрещены.
-
----
-
-## CI
-
-GitHub Actions запускается на каждый push и PR:
-- `npm run lint`
-- `tsc --noEmit`
-- `npm run test`
-- `npm run build`
-
-Если CI красный — PR не мержится.
+**Спринт 1**, зелёный CI.
+- Починить тест и двойную запись в createSwapRequest
+- Добавить @vitest/coverage-v8, включить покрытие в CI
+- Прогнать npm run format, поправить отступы, переименовать usercard-elemetn.tsx
+- Заменить Math.random() на useId() в Input
+- Починить --modal-overlay-color, xmlns и три несуществующие переменные
+**Спринт 2**, один источник правды.
+- getAuthUser() из рендера UserCard и SkillCard, перевести на селекторы
+- Свести загрузку users и skills к одной точке, убрать fetchUserById из SkillCard и динамический импорт из FavoritesPage
+- Ключ likedSkills и имена событий забрать в constants и в экспорты requestStorage
+- Починить связку профиля и авторизации
+**Спринт 3**, границы слоёв.
+- Перенести составные компоненты из shared в widgets, расформировать src/components/
+- *Utils перенести в shared/lib/storage/
+- Включить eslint-plugin-boundaries
+- Вынести преобразование wantsToLearn в одну общую функцию
 
