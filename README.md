@@ -1,7 +1,5 @@
 # SkillSwap — платформа обмена навыками
 
-[Demo]()
-
 ### Стек
 <p align="center">
   <img src="https://skillicons.dev/icons?i=ts,react,redux,html,css,vite" alt="Skills" />
@@ -22,6 +20,16 @@ npm run dev
 ```
 
 ---
+
+## Мой вклад в проект:
+- Координировала работу команды из 11 человек в роли помощника тимлида:
+декомпозировала задачи, распределяла работу, проводила code review.
+- Реализовала авторизацию с помощью React Hook Form и Yup, управление состоянием
+пользователя — через Redux.
+- Разрабатывала React-компоненты по макетам: вёрстка, взаимодействие компонентов и логика
+отображения состояний.
+- Реализовала поисковую строку с сохранением query-параметров в URL.
+- Реализовала календарь с использованием datepicker.
 
 ## Структура проекта
 
@@ -95,11 +103,13 @@ Lazy-загрузка настроена в `src/app/providers/RouterProvider.ts
 - Прогнать npm run format, поправить отступы, переименовать usercard-elemetn.tsx
 - Заменить Math.random() на useId() в Input
 - Починить --modal-overlay-color, xmlns и три несуществующие переменные
+
 **Спринт 2**, один источник правды.
 - getAuthUser() из рендера UserCard и SkillCard, перевести на селекторы
 - Свести загрузку users и skills к одной точке, убрать fetchUserById из SkillCard и динамический импорт из FavoritesPage
 - Ключ likedSkills и имена событий забрать в constants и в экспорты requestStorage
 - Починить связку профиля и авторизации
+
 **Спринт 3**, границы слоёв.
 - Перенести составные компоненты из shared в widgets, расформировать src/components/
 - *Utils перенести в shared/lib/storage/
